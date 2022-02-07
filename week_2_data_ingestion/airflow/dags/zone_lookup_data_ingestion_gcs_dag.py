@@ -17,8 +17,8 @@ from airflow.providers.google.cloud.operators.bigquery import BigQueryCreateExte
 BUCKET = "dtc_data_lake_original-brace-339113"
 PROJECT_ID = "original-brace-339113"
 
-dataset_file = "yellow_tripdata_2021-01.csv"
-dataset_url = f"https://s3.amazonaws.com/nyc-tlc/trip+data/{dataset_file}"
+dataset_file = "taxi+_zone_lookup.csv"
+dataset_url = f"https://s3.amazonaws.com/nyc-tlc/misc/{dataset_file}"
 path_to_local_home = os.environ.get("AIRFLOW_HOME", "/opt/airflow/")
 # path_to_creds = f"{path_to_local_home}/google_credentials.json"
 path_to_creds = f"google_credentials.json"
@@ -27,7 +27,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path_to_creds
 # DATASET_NAME = os.environ.get("GCP_DATASET_NAME", 'ny_trips_from_dag')
 # TABLE_NAME = os.environ.get("GCP_TABLE_NAME", 'trips_data_all')
 DATASET_NAME = "trips_data_all"
-TABLE_NAME = "ny_trips"
+TABLE_NAME = "zone_lookup"
 
 def format_to_parquet(src_file):
     if not src_file.endswith('.csv'):
@@ -65,7 +65,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id="data_ingestion_gcs_dag",
+    dag_id="zone_lookup_data_ingestion_gcs_dag",
     schedule_interval="@daily",
     default_args=default_args,
     catchup=False,
